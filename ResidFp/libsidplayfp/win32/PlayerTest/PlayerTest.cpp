@@ -9,7 +9,7 @@
 
 const char RESIDFP_ID[] = "ReSIDfp";
 
-int main()
+int main( int argc, char** argv)
 {
 	sidplayfp engine;
 	SidConfig cfg;
@@ -29,7 +29,14 @@ int main()
 
 	SidTuneMod* sidTune;
 	sidTune = new SidTuneMod(NULL);
-	sidTune->load("d:\\Proriad.sid");
+	if (argc > 1)
+	{
+		sidTune->load(argv[1]);
+	}
+	else
+	{
+		sidTune->load("d:\\Proriad.sid");
+	}
 	const SidTuneInfo* info = sidTune->getInfo();
 	//printf("%s", info->getLoadAddress());
 	//cfg.sidEmulation = new ReSIDfpBuilder();
