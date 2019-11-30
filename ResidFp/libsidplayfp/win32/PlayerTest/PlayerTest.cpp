@@ -6,6 +6,7 @@
 #include "sidplayfp/sidplayfp.h"
 #include "sidtune/SidTuneMod.h"
 #include "residfp.h"
+#include "player.h"
 
 const char RESIDFP_ID[] = "ReSIDfp";
 
@@ -40,7 +41,6 @@ int main( int argc, char** argv)
 	const SidTuneInfo* info = sidTune->getInfo();
 	//printf("%s", info->getLoadAddress());
 	//cfg.sidEmulation = new ReSIDfpBuilder();
-
 	//sidbuilder* baseBuilder;
 	
     return 0;
