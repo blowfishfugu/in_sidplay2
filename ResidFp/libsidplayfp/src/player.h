@@ -35,9 +35,8 @@
 #include "mixer.h"
 #include "c64/c64.h"
 
-#ifdef HAVE_CONFIG_H
 #  include "config.h"
-#endif
+
 
 #ifdef PC64_TESTSUITE
 #  include <string>

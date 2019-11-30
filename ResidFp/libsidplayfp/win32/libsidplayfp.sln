@@ -1,11 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.902
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libsidplayfp", "libsidplayfp.vcxproj", "{173CDD4C-D1E7-405D-95D9-04E5C10CD232}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PlayerTest", "PlayerTest\PlayerTest.vcxproj", "{CEEE7382-4D90-406A-B074-A118830A62D6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{173CDD4C-D1E7-405D-95D9-04E5C10CD232} = {173CDD4C-D1E7-405D-95D9-04E5C10CD232}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,5 +37,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {36774945-D764-4860-A5AE-69C6AAB267EB}
 	EndGlobalSection
 EndGlobal
