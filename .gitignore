@@ -59,3 +59,8 @@ in_sidplay2/in_sidplay2.VC.VC.opendb
 in_sidplay2/in_sidplay2.aps
 *.user
 /.vs
+/ResidFp/libsidplayfp/win32/PlayerTest/Debug
+/ResidFp/libsidplayfp/win32/PlayerTest/Release
+/ResidFp/libsidplayfp/win32/PlayerTest/x64
+/ResidFp/libsidplayfp/win32/x64/Debug
+/ResidFp/libsidplayfp/win32/x64/Release
