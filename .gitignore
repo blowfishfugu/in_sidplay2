@@ -60,3 +60,8 @@ in_sidplay2/in_sidplay2.aps
 *.user
 /.vs/in_sidplay2/v15
 /.vs
+/ResidFp/libsidplayfp/win32/PlayerTest/Debug
+/ResidFp/libsidplayfp/win32/PlayerTest/Release
+/ResidFp/libsidplayfp/win32/PlayerTest/x64
+/ResidFp/libsidplayfp/win32/x64/Debug
+/ResidFp/libsidplayfp/win32/x64/Release
