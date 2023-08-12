@@ -580,7 +580,7 @@ void eq_set(int on, char data[10], int preamp)
 extern In_Module inmod = 
 {
 	IN_VER,	// defined in IN2.H
-	"Winamp SIDPlayer (libsidplayfp) v2.2.0.0"
+	"Winamp SIDPlayer (libsidplayfp) v2.3.0.0"
 	// winamp runs on both alpha systems and x86 ones. :)
 /*#ifdef __alpha
 	"(AXP)"
