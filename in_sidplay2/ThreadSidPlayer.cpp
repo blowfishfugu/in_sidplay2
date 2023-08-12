@@ -12,10 +12,10 @@ CThreadSidPlayer::CThreadSidPlayer(In_Module& inWAmod): m_tune(0), m_threadHandl
 	m_playerStatus = SP_STOPPED;
 	m_playerConfig.playLimitEnabled = false;
 	m_playerConfig.playLimitSec = 120;
-	m_playerConfig.songLengthsFile = NULL;
+	m_playerConfig.songLengthsFile = "";
 	m_playerConfig.useSongLengthFile = false;
 	m_playerConfig.useSTILfile = false;
-	m_playerConfig.hvscDirectory = NULL;
+	m_playerConfig.hvscDirectory = "";
 	m_playerConfig.voiceConfig[0][0] = true;
 	m_playerConfig.voiceConfig[0][1] = true;
 	m_playerConfig.voiceConfig[0][2] = true;
@@ -25,10 +25,8 @@ CThreadSidPlayer::CThreadSidPlayer(In_Module& inWAmod): m_tune(0), m_threadHandl
 	m_playerConfig.voiceConfig[2][0] = true;
 	m_playerConfig.voiceConfig[2][1] = true;
 	m_playerConfig.voiceConfig[2][2] = true;
-	m_playerConfig.playlistFormat = new char[32];
-	strcpy(m_playerConfig.playlistFormat, "%t %x %sn / %a / %r %st");
-	m_playerConfig.subsongFormat = new char[32];
-	strcpy(m_playerConfig.subsongFormat, "(Tune %n)");
+	m_playerConfig.playlistFormat =( "%t %x %sn / %a / %r %st");
+	m_playerConfig.subsongFormat= ("(Tune %n)");
 
 	m_playerConfig.pseudoStereo = false;
 	m_playerConfig.sid2Model = SidConfig::sid_model_t::MOS6581;	
@@ -380,10 +378,10 @@ void CThreadSidPlayer::SaveConfigToFile(PlayerConfig *plconf, wchar_t* fileName)
 	outFile<<"PlayLimitEnabled="<<plconf->playLimitEnabled<<endl;
 	outFile<<"PlayLimitTime="<<plconf->playLimitSec<<endl;
 	outFile<<"UseSongLengthFile="<<plconf->useSongLengthFile<<endl;
-	if((!plconf->useSongLengthFile)||(plconf->songLengthsFile == NULL)) outFile<<"SongLengthsFile="<<""<<endl;
+	if((!plconf->useSongLengthFile)||(plconf->songLengthsFile.length()>0 )) outFile<<"SongLengthsFile="<<""<<endl;
 	else outFile<<"SongLengthsFile="<<plconf->songLengthsFile<<endl;
 	outFile<<"UseSTILFile="<<plconf->useSTILfile<<endl;
-	if(plconf->hvscDirectory == NULL) plconf->useSTILfile = false;
+	if(plconf->hvscDirectory.length()>0) plconf->useSTILfile = false;
 	if(!plconf->useSTILfile) outFile<<"HVSCDir="<<""<<endl;
 	else outFile<<"HVSCDir="<<plconf->hvscDirectory<<endl;
 	outFile << "UseSongLengthFile=" << plconf->useSongLengthFile << endl;
@@ -493,16 +491,13 @@ void CThreadSidPlayer::AssignConfigValue(PlayerConfig* plconf,string token, stri
 	}
 	if(token.compare("SongLengthsFile") == 0)
 	{
-		plconf->songLengthsFile = new char[value.length()+1];
-
-		strcpy(plconf->songLengthsFile,value.c_str());
+		plconf->songLengthsFile=value;
 		return;
 	}
 
 	if(token.compare("HVSCDir") == 0)
 	{
-		plconf->hvscDirectory = new char[value.length()+1];
-		strcpy(plconf->hvscDirectory,value.c_str());
+		plconf->hvscDirectory = value;
 		return;
 	}
 	if(token.compare("UseSTILFile") == 0)
@@ -600,59 +595,49 @@ void CThreadSidPlayer::SetConfig(PlayerConfig* newConfig)
 	m_playerConfig.pseudoStereo = newConfig->pseudoStereo;
 	m_playerConfig.sid2Model = newConfig->sid2Model;
 	
-
-	
-	//TODO czy trzeba drugi i trzeci adres sida??????
-
 	//string memory cannot overlap !!!
 	if(m_playerConfig.songLengthsFile != newConfig->songLengthsFile)
 	{
-		if(m_playerConfig.songLengthsFile != NULL) 
+		if(m_playerConfig.songLengthsFile.length()>0)
 		{
-			delete[] m_playerConfig.songLengthsFile;
-			m_playerConfig.songLengthsFile = NULL;
+			m_playerConfig.songLengthsFile.clear();
 		}
-		if(newConfig->songLengthsFile != NULL)
+		if(newConfig->songLengthsFile.length()>0)
 		{
-			m_playerConfig.songLengthsFile = new char[strlen(newConfig->songLengthsFile)+1];
-			strcpy(m_playerConfig.songLengthsFile, newConfig->songLengthsFile);
+			m_playerConfig.songLengthsFile= newConfig->songLengthsFile;
 		}
 	}
 
 	m_playerConfig.useSTILfile = newConfig->useSTILfile;
 	if(m_playerConfig.hvscDirectory != newConfig->hvscDirectory)
 	{
-		if(m_playerConfig.hvscDirectory != NULL) 
+		if(m_playerConfig.hvscDirectory.length()>0) 
 		{
-			delete[] m_playerConfig.hvscDirectory;
-			m_playerConfig.hvscDirectory = NULL;
+			m_playerConfig.hvscDirectory.clear();
 		}
-		if(newConfig->hvscDirectory != NULL)
+		if(newConfig->hvscDirectory.length()>0)
 		{
-			m_playerConfig.hvscDirectory = new char[strlen(newConfig->hvscDirectory)+1];
-			strcpy(m_playerConfig.hvscDirectory, newConfig->hvscDirectory);
+			m_playerConfig.hvscDirectory = newConfig->hvscDirectory;
 		}
 	}
 
 	if (newConfig->playlistFormat != m_playerConfig.playlistFormat)
 	{
-		if (m_playerConfig.playlistFormat != NULL)
+		if (m_playerConfig.playlistFormat.length()>0)
 		{
-			delete[] m_playerConfig.playlistFormat;
-			m_playerConfig.playlistFormat = NULL;
+			m_playerConfig.playlistFormat.clear();
 		}
-		m_playerConfig.playlistFormat = strdup(newConfig->playlistFormat);//new char[strlen(newConfig->playlistFormat) + 1];
+		m_playerConfig.playlistFormat = newConfig->playlistFormat;//new char[strlen(newConfig->playlistFormat) + 1];
 		//strcpy(m_playerConfig.playlistFormat, newConfig->playlistFormat);
 	}
 
 	if (newConfig->subsongFormat != m_playerConfig.subsongFormat)
 	{
-		if (m_playerConfig.subsongFormat != NULL)
+		if (m_playerConfig.subsongFormat.length()>0)
 		{
-			delete[] m_playerConfig.subsongFormat;
-			m_playerConfig.subsongFormat = NULL;
+			m_playerConfig.subsongFormat.clear();
 		}
-		m_playerConfig.subsongFormat = strdup(newConfig->subsongFormat);//new char[strlen(newConfig->subsongFormat) + 1];
+		m_playerConfig.subsongFormat = newConfig->subsongFormat;//new char[strlen(newConfig->subsongFormat) + 1];
 		//strcpy(m_playerConfig.subsongFormat, newConfig->subsongFormat);
 	}
 
@@ -700,13 +685,13 @@ void CThreadSidPlayer::SetConfig(PlayerConfig* newConfig)
 	m_decodeBufLen = 2 * 576 * (PLAYBACK_BIT_PRECISION >>3) * numChann;
 	m_decodeBuf = new char[m_decodeBufLen];
 	//open song length database
-	if((m_playerConfig.useSongLengthFile) && (m_playerConfig.songLengthsFile != NULL))
+	if((m_playerConfig.useSongLengthFile) && (m_playerConfig.songLengthsFile.length()>0 ))
 	{
-		openRes = m_sidDatabase.open(m_playerConfig.songLengthsFile);
+		openRes = m_sidDatabase.open(m_playerConfig.songLengthsFile.c_str());
 		if(openRes != 0) MessageBoxA(NULL,"Error opening songlength database.\r\nDisable songlength databse or choose other file","in_sidplay2",MB_OK);
 	}
 	//open STIL file
-	if((m_playerConfig.useSTILfile) && (m_playerConfig.hvscDirectory != NULL))
+	if((m_playerConfig.useSTILfile) && (m_playerConfig.hvscDirectory.length()>0))
 	{
 		ClearSTILData();
 		FillSTILData();
@@ -811,7 +796,7 @@ void CThreadSidPlayer::FillSTILData()
 
 	m.clear();
 	FILE *f;
-	strcpy(buf, m_playerConfig.hvscDirectory);
+	strcpy(buf, m_playerConfig.hvscDirectory.c_str() );
 	strcat(buf, "\\documents\\stil.txt");
 	f = fopen(buf, "rb+");
 	if (f == NULL)
@@ -859,7 +844,7 @@ void CThreadSidPlayer::FillSTILData2()
 
 	m_stillMap2.clear();
 	FILE *f;
-	strcpy(buf, m_playerConfig.hvscDirectory);
+	strcpy(buf, m_playerConfig.hvscDirectory.c_str());
 	strcat(buf, "\\documents\\stil.txt");
 	f = fopen(buf, "rb+");
 	if (f == NULL)
@@ -956,10 +941,10 @@ const char* CThreadSidPlayer::GetSTILData(const char* filePath)
 	map<const char*,char*,ltstr>::iterator i;
 	char* stilFileName;
 
-	if((filePath == NULL)||(m_playerConfig.hvscDirectory == NULL)) return NULL;
-	if(strlen(filePath) < strlen(m_playerConfig.hvscDirectory)) return NULL;
-	stilFileName = new char[strlen(filePath) - strlen(m_playerConfig.hvscDirectory) +1];
-	strcpy(stilFileName,&filePath[strlen(m_playerConfig.hvscDirectory)]);
+	if((filePath == NULL)||(m_playerConfig.hvscDirectory.length()>0)) return NULL;
+	if(strlen(filePath) < m_playerConfig.hvscDirectory.length() ) return NULL;
+	stilFileName = new char[strlen(filePath) - m_playerConfig.hvscDirectory.length() +1];
+	strcpy(stilFileName,&filePath[m_playerConfig.hvscDirectory.length()]);
 	//i = m.find("aa\\DEMOS\\A-F\\Afterburner.sid");
 	i = m.find(stilFileName);
 	delete[] stilFileName;
@@ -976,10 +961,10 @@ const StilBlock* CThreadSidPlayer::GetSTILData2(const char* filePath, int subson
 	map<const char*, vector<StilBlock*>, ltstr>::iterator i;
 	char* stilFileName;
 
-	if ((filePath == NULL) || (m_playerConfig.hvscDirectory == NULL)) return NULL;
-	if (strlen(filePath) < strlen(m_playerConfig.hvscDirectory)) return NULL;
-	stilFileName = new char[strlen(filePath) - strlen(m_playerConfig.hvscDirectory) + 1];
-	strcpy(stilFileName, &filePath[strlen(m_playerConfig.hvscDirectory)]);
+	if ((filePath == NULL) || (m_playerConfig.hvscDirectory.length()>0)) return NULL;
+	if (strlen(filePath) < m_playerConfig.hvscDirectory.length() ) return NULL;
+	stilFileName = new char[strlen(filePath) - m_playerConfig.hvscDirectory.length() + 1];
+	strcpy(stilFileName, &filePath[m_playerConfig.hvscDirectory.length()]);
 	//i = m.find("aa\\DEMOS\\A-F\\Afterburner.sid");
 	i = m_stillMap2.find(stilFileName);
 	delete[] stilFileName;

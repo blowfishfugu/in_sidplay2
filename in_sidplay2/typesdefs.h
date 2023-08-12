@@ -1,21 +1,22 @@
 #pragma once
 #include "sidplayfp/SidConfig.h"
+#include <string>
 
-typedef enum PlayerStatus_t
+enum PlayerStatus_t
 {
 	SP_RUNNING,
 	SP_PAUSED,
 	SP_STOPPED
-} PlayerStatus_t;
+};
 
 
-typedef struct PlayerConfig
+struct PlayerConfig
 {
 	SidConfig sidConfig;
 	bool playLimitEnabled;
 	int playLimitSec;
-	char* songLengthsFile;
-	char* hvscDirectory;
+	std::string songLengthsFile;
+	std::string hvscDirectory;
 	bool useSongLengthFile;
 	bool useSTILfile;
 	/**
@@ -24,6 +25,6 @@ typedef struct PlayerConfig
 	bool voiceConfig[3][3];
 	bool pseudoStereo;
 	SidConfig::sid_model_t sid2Model;
-	char* playlistFormat;
-	char* subsongFormat;
-} PlayerConfig;
+	std::string playlistFormat;
+	std::string subsongFormat;
+};
